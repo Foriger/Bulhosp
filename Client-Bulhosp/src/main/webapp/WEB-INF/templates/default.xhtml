@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+<h:head>
+	<title>Bulhosp | Специализирана болнична система</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet name="screen.css" library="css" />
+</h:head>
+<h:body>
+	<div id="container">
+		<div id="header">
+			<h:form>
+				<rich:toolbar itemSeparator="disc">
+					<h:commandLink value="Начало" action="/index.jsf">
+					</h:commandLink>
+					<h:commandLink value="Прием" action="/admit.jsf">
+					</h:commandLink>
+					<h:commandLink value="Изписване" action="/discharge.jsf">
+					</h:commandLink>
+					<h:commandLink value="Трансфер" action="/transfer.jsf">
+					</h:commandLink>
+					<h:commandLink value="Каса" action="/pay.jsf">
+					</h:commandLink>
+				</rich:toolbar>
+			</h:form>
+		</div>
+		<div id="content">
+			<ui:insert name="content">
+                [Template content will be inserted here]
+            </ui:insert>
+		</div>
+
+		<div id="footer">
+			<p>Radoslav Penev, TU-Sofia, 2014</p>
+		</div>
+	</div>
+</h:body>
+</html>

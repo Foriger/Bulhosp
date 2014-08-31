@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<!-- INTERFACE -->
+<composite:interface>
+	<composite:attribute name="patientForAdmit" />
+</composite:interface>
+
+<!-- IMPLEMENTATION -->
+<composite:implementation>
+	<h:panelGrid columns="3" styleClass="titleCell">
+		<f:facet name="header">
+			<h:outputText
+				value="Моля въведете идентификационният код на пациента:" />
+		</f:facet>
+
+		<h:outputLabel for="egn" value="ЕГН:" />
+		<h:inputText id="egn" value="#{cc.attrs.patientForAdmit.egn}">
+			<rich:validator />
+		</h:inputText>
+		<rich:message for="egn" errorClass="invalid" />
+
+		<h:outputLabel for="lnch" value="ЛНЧ:" />
+		<h:inputText id="lnch" value="#{cc.attrs.patientForAdmit.lnch}">
+			<rich:validator />
+		</h:inputText>
+		<rich:message for="lnch" errorClass="invalid" />
+
+		<h:outputLabel for="ss_no" value="ss_no:" />
+		<h:inputText id="ss_no" value="#{cc.attrs.patientForAdmit.ss_no}">
+			<rich:validator />
+		</h:inputText>
+		<rich:message for="ss_no" errorClass="invalid" />
+
+		<f:facet name="footer">
+			<h:outputText value="Само едно от полетата може да бъде попълнено." />
+		</f:facet>
+
+	</h:panelGrid>
+
+	<h:panelGrid columns="3" styleClass="titleCell">
+		<f:facet name="header">
+			<h:outputText value="Моля въведете личните данни на пациента:" />
+		</f:facet>
+
+		<h:outputLabel for="firstname" value="Име:" />
+		<h:inputText id="firstname" value="#{cc.attrs.patientForAdmit.firstname}">
+			<rich:validator />
+		</h:inputText>
+		<rich:message for="firstname" errorClass="invalid" />
+
+		<h:outputLabel for="surname" value="Презиме:" />
+		<h:inputText id="surname" value="#{cc.attrs.patientForAdmit.surname}">
+			<rich:validator />
+		</h:inputText>
+		<rich:message for="surname" errorClass="invalid" />
+
+		<h:outputLabel for="family" value="Фамилия:" />
+		<h:inputText id="family" value="#{cc.attrs.patientForAdmit.family}">
+			<rich:validator />
+		</h:inputText>
+		<rich:message for="family" errorClass="invalid" />
+		
+		<h:outputLabel for="dob" value="Дата на раждане:" />
+		<rich:calendar id="dob" value="#{cc.attrs.patientForAdmit.dob}"/>
+		<rich:message for="dob" errorClass="invalid" />
+
+		<h:outputLabel for="address" value="Адрес:" />
+		<h:inputTextarea id="address"
+			value="#{cc.attrs.patientForAdmit.address}" rows="10">
+			<rich:validator />
+		</h:inputTextarea>
+		<rich:message for="address" errorClass="invalid" />
+
+		<h:outputLabel for="gender" value="Пол:" id="gender" />
+		<h:selectOneMenu value="#{cc.attrs.patientForAdmit.gender}">
+			<f:selectItem itemValue="M" itemLabel="Мъж" />
+			<f:selectItem itemValue="F" itemLabel="Жена" />
+			<f:selectItem itemValue="U" itemLabel="Неизвестен" />
+		</h:selectOneMenu>
+		<rich:message for="gender" errorClass="invalid" />
+
+		<h:outputLabel for="notes" value="Бележки:" />
+		<h:inputTextarea id="notes"
+			value="#{cc.attrs.patientForAdmit.notes}" rows="10" />
+		<rich:message for="notes" errorClass="invalid" />
+
+		<h:outputLabel for="ward" value="Oтделение:" />
+		<h:selectOneMenu value="#{cc.attrs.patientForAdmit.ward_for_hospital_stay}" id="ward">
+			<f:selectItem itemValue="M" itemLabel="Много са.." />
+		</h:selectOneMenu>
+		<rich:message for="ward" errorClass="invalid" />
+
+
+		<h:outputLabel for="diagnose" value="Диагноза:" />
+		<h:selectOneMenu value="#{cc.attrs.patientForAdmit.diagnoseCode}" id="diagnose">
+			<f:selectItem itemValue="1" itemLabel="1" />
+		</h:selectOneMenu>
+		<rich:message for="diagnose" errorClass="invalid" />
+
+	</h:panelGrid>
+
+</composite:implementation>
+</html>
