@@ -2,8 +2,6 @@ package com.bulhosp.model;
 
 import java.util.List;
 
-
-
 public class Results {
 	private List<Patient> results;
 

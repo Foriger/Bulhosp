@@ -1,13 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition template="/WEB-INF/templates/default.xhtml"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:a4j="http://richfaces.org/a4j"
-                xmlns:rich="http://richfaces.org/rich"
-                xmlns:my="http://java.sun.com/jsf/composite/components">
-    <ui:define name="content">
-    <h1>Трансфер на пациент</h1>
-    </ui:define>
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+	<ui:define name="content">
+		<h1>Промяна на пациентски статус</h1>
+		<rich:panel id="updatePatientPanel" header="Промяна на пациент"
+			headerClass="header">
+			<h:form id="update">
+				<rich:dataTable value="#{updateController.allAdmittedPatients}"
+					var="patient"
+					onrowclick="$(this.parentElement).find('.rf-dt-r').removeClass('selected-dt-row'); $(this).addClass('selected-dt-row');">
+					<f:facet name="noData">
+                В момента няма приети пациенти.
+            </f:facet>
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:outputText value="Име" />
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.firstname}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:outputText value="Презиме" />
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.surname}" />
+					</rich:column>
+					<rich:column>
+
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:outputText value="Фамилия" />
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.family}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:outputText value="Диагноза" />
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.diagnoseCode}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:outputText value="Отделение" />
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.ward_for_hospital_stay}" />
+					</rich:column>
+
+					<rich:column>
+						<a4j:commandButton value="Обнови пациент"
+							action="#{updateController.updatePatientForPopup(patient)}"
+							render=":popup" oncomplete="#{rich:component('popup')}.show();" />
+					</rich:column>
+
+				</rich:dataTable>
+			</h:form>
+		</rich:panel>
+		<rich:popupPanel id="popup" modal="false" autosized="true"
+			resizeable="false">
+			<f:facet name="header">
+				<h:outputText value="Промяна статус на пациент" />
+			</f:facet>
+			<f:facet name="controls">
+				<h:outputLink value="#"
+					onclick="#{rich:component('popup')}.hide(); return false;">
+                X
+            </h:outputLink>
+			</f:facet>
+			<h:panelGrid columns="3" styleClass="titleCell">
+				<f:facet name="header">
+					<h:outputText
+						value="Mожете да обновите следната информация за пациента" />
+				</f:facet>
+				<h:outputLabel for="ward" value="Отделение:" id="ward" />
+				<h:selectOneMenu
+					value="#{updateController.patientForUpdate.ward_for_hospital_stay}">
+					<f:selectItem itemValue="OTD1" itemLabel="OTD1" />
+					<f:selectItem itemValue="OTD2" itemLabel="OTD2" />
+					<f:selectItem itemValue="OTD3" itemLabel="OTD3" />
+				</h:selectOneMenu>
+				<rich:message for="ward" errorClass="invalid" />
+
+				<h:outputLabel for="diagnose_code" value="Диагноза:" id="diagnose_code" />
+				<h:selectOneMenu
+					value="#{updateController.patientForUpdate.diagnoseCode}">
+					<f:selectItem itemValue="Трипер" itemLabel="Трипер" />
+					<f:selectItem itemValue="Гонорея" itemLabel="Гонорея" />
+				</h:selectOneMenu>
+				<rich:message for="ward" errorClass="invalid" />
+				
+				<f:facet name="footer">
+					<h:commandButton />
+				</f:facet>
+			</h:panelGrid>
+
+		</rich:popupPanel>
+	</ui:define>
 </ui:composition>
