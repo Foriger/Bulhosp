@@ -1,14 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition template="/WEB-INF/templates/default.xhtml"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:a4j="http://richfaces.org/a4j"
-                xmlns:rich="http://richfaces.org/rich"
-                xmlns:my="http://java.sun.com/jsf/composite/components">
-    <ui:define name="content">
-    <h1>Bulhosp - Специализирана болнична система</h1>
-    <p>Bulhosp е специализирана система, която се използва за болнична администрация</p>
-    </ui:define>
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<ui:define name="content">
+		<h1>Bulhosp - Специализирана болнична система</h1>
+
+		<rich:panel>
+			<h:form id="searchPatientForm">
+				<rich:messages />
+				<rich:dataTable value="#{indexController.allPatients}" var="patient"
+					id="table">
+					<f:facet name="noData">
+                Nothing found
+            </f:facet>
+
+					<rich:column filterValue="#{indexController.nameFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.firstname, indexController.nameFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:outputText value="Име:" />
+								<h:inputText value="#{indexController.nameFilter}">
+									<a4j:ajax render="table" execute="@this" event="change" />
+								</h:inputText>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.firstname}" />
+					</rich:column>
+
+
+					<rich:column filterValue="#{indexController.surnameFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.surname, indexController.surnameFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:outputText value="Презиме:" />
+								<h:inputText value="#{indexController.surnameFilter}">
+									<a4j:ajax render="table" execute="@this" event="change" />
+								</h:inputText>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.surname}" />
+					</rich:column>
+				</rich:dataTable>
+
+				<rich:column filterValue="#{indexController.surnameFilter}"
+					filterExpression="#{fn:containsIgnoreCase(patient.surname, indexController.surnameFilter)}">
+					<f:facet name="header">
+						<h:panelGroup>
+							<h:outputText value="Фамилия:" />
+							<h:inputText value="#{indexController.surnameFilter}">
+								<a4j:ajax render="table" execute="@this" event="change" />
+							</h:inputText>
+						</h:panelGroup>
+					</f:facet>
+					<h:outputText value="#{patient.surname}" />
+				</rich:column>
+
+
+			</h:form>
+		</rich:panel>
+
+	</ui:define>
 </ui:composition>
+
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:form id="form">
+        <rich:messages />
+        <rich:dataTable value="#{carsBean.allInventoryItems}" var="car" id="table" rows="30">
+            <f:facet name="noData">
+                Nothing found
+            </f:facet>
+            <rich:column filterValue="#{carsFilteringBean.vendorFilter}"
+                filterExpression="#{fn:containsIgnoreCase(car.vendor, carsFilteringBean.vendorFilter)}">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="Vendor " />
+                        <h:selectOneMenu value="#{carsFilteringBean.vendorFilter}">
+                            <f:selectItems value="#{carsBean.vendorOptions}" />
+                            <a4j:ajax render="table" execute="@this" event="change" />
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                </f:facet>
+                <h:outputText value="#{car.vendor}" />
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">
+                    <h:outputText value="Model" />
+                </f:facet>
+                <h:outputText value="#{car.model}" />
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">
+                    <h:outputText value="Price" />
+                </f:facet>
+                <h:outputText value="#{car.price}" />
+            </rich:column>
+            <rich:column filter="#{carsFilteringBean.mileageFilterImpl}">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="Mileage &le; " />
+                        <h:inputText value="#{carsFilteringBean.mileageFilter}">
+                            <f:convertNumber groupingUsed="true" />
+                            <f:validateLongRange maximum="500000" />
+                            <a4j:ajax event="blur" render="table" execute="@this" />
+                        </h:inputText>
+                    </h:panelGroup>
+                </f:facet>
+                <h:outputText value="#{car.mileage}" />
+            </rich:column>
+            <rich:column filterValue="#{carsFilteringBean.vinFilter}"
+                filterExpression="#{fn:containsIgnoreCase(car.vin,carsFilteringBean.vinFilter)}">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="VIN " />
+                        <h:inputText value="#{carsFilteringBean.vinFilter}">
+                            <a4j:ajax event="blur" render="table" execute="@this" />
+                        </h:inputText>
+                    </h:panelGroup>
+                </f:facet>
+                <h:outputText value="#{car.vin}" />
+            </rich:column>
+        </rich:dataTable>
+    </h:form>
+</ui:composition> -->

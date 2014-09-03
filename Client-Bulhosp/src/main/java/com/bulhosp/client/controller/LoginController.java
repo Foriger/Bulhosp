@@ -51,7 +51,7 @@ public class LoginController {
 				LoginResponse loginResponse = om.readValue(EntityUtils
 						.toByteArray(httpEntity), LoginResponse.class);
 				SessionUtilsSingleton.getInstance().setSessionToken(loginResponse.getSessionToken());
-				result = "index";
+				result = "index?faces-redirect=true";
 			}		
 		} catch (URISyntaxException e) {
 			e.printStackTrace();

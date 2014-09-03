@@ -22,6 +22,6 @@ Change the PROJECT_STAGE to 'Production' when putting the application into produ
 
     <!-- add a welcome-file-list entry to allow JSF pages to be sued as welcome files -->
     <welcome-file-list>
-        <welcome-file>login.jsf</welcome-file>
+        <welcome-file>index.jsf</welcome-file>
     </welcome-file-list>
 </web-app>
