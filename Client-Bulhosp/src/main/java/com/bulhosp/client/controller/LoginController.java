@@ -67,8 +67,9 @@ public class LoginController {
 		return result;
 	}
 
-	public void logoutAttempt() {
+	public String logoutAttempt() {
 		SessionUtilsSingleton.getInstance().setSessionToken(null);
+		return "login";
 	}
 
 	public String getUsername() {
