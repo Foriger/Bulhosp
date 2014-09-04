@@ -95,15 +95,13 @@ public class IndexController {
 						+ statusCode);
 			} else {
 				System.out.println(response.toString());
+				HttpEntity httpEntity = response.getEntity();
+
+				ObjectMapper om = new ObjectMapper();
+				Results persons = om.readValue(EntityUtils.toByteArray(httpEntity),
+						Results.class);
+				allPersons = persons.getResults();
 			}
-
-			HttpEntity httpEntity = response.getEntity();
-
-			ObjectMapper om = new ObjectMapper();
-			Results persons = om.readValue(EntityUtils.toByteArray(httpEntity),
-					Results.class);
-			allPersons = persons.getResults();
-
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {

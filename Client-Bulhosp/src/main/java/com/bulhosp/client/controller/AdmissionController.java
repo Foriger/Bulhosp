@@ -7,10 +7,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.bulhosp.model.Patient;
@@ -37,7 +38,7 @@ public class AdmissionController {
 	public void admitPatient() {
 		patientForAdmit.setStatus("ADMITTED");
 		System.out.println("Patient will be admitted");
-		DefaultHttpClient httpClient = new DefaultHttpClient();
+		
 		try {
 			ObjectMapper om = new ObjectMapper();
 			StringEntity input = new StringEntity(om.writeValueAsString(patientForAdmit));
@@ -50,8 +51,8 @@ public class AdmissionController {
 					"ktB7WNVrbhwFIElE6a8Jq74daE1HqcDqyxtcHnEP");
 			postRequest.setHeader("Content-Type", "application/json");
 			postRequest.setEntity(input);
-
-			HttpResponse response = httpClient.execute(postRequest);
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			CloseableHttpResponse response = httpclient.execute(postRequest);
 
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 201) {
@@ -70,10 +71,9 @@ public class AdmissionController {
 			FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					errorMessage, "Admit failed.Please try again later");
 			FacesContext.getCurrentInstance().addMessage(null, m);
-		} finally {
-			httpClient.getConnectionManager().shutdown();
-		}
+		} 
 	}
+	
 
 	private String getRootErrorMessage(Exception e) {
 		// Default to general error message that registration failed.
