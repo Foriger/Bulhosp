@@ -31,61 +31,57 @@ public class IndexController {
 	private String surnameFilter;
 	private String familyFilter;
 
+	public Filter<?> getFilterName() {
+		return new Filter<Patient>() {
+			public boolean accept(Patient patient) {
+				String name = getNameFilter();
+				if (name == null || name.length() == 0
+						|| name.equals(patient.getFirstname())) {
+					return true;
+				}
+				return false;
+			}
+		};
+	}
 
+	public Filter<?> getFilterSurname() {
+		return new Filter<Patient>() {
+			public boolean accept(Patient patient) {
+				String name = getNameFilter();
+				if (name == null || name.length() == 0
+						|| name.equals(patient.getSurname())) {
+					return true;
+				}
+				return false;
+			}
+		};
+	}
 
-	public Filter<?> getFilterName() { 
-        return new Filter<Patient>() {
-            public boolean accept(Patient patient) {
-                String name = getNameFilter();
-                if (name  == null || name.length() == 0 || name.equals(patient.getFirstname())) {
-                    return true;
-                }
-                return false;
-            }
-        };
-    }
-    public Filter<?> getFilterSurname() { 
-        return new Filter<Patient>() {
-            public boolean accept(Patient patient) {
-                String name = getNameFilter();
-                if (name  == null || name.length() == 0 || name.equals(patient.getSurname())) {
-                    return true;
-                }
-                return false;
-            }
-        };
-    }
-	
-    public Filter<?> getFilterFamily() { 
-        return new Filter<Patient>() {
-            public boolean accept(Patient patient) {
-                String name = getNameFilter();
-                if (name  == null || name.length() == 0 || name.equals(patient.getFamily())) {
-                    return true;
-                }
-                return false;
-            }
-        };
-    }
-    
-	
+	public Filter<?> getFilterFamily() {
+		return new Filter<Patient>() {
+			public boolean accept(Patient patient) {
+				String name = getNameFilter();
+				if (name == null || name.length() == 0
+						|| name.equals(patient.getFamily())) {
+					return true;
+				}
+				return false;
+			}
+		};
+	}
+
 	@PostConstruct
 	private void initAllPatientData() {
 		allPatients = (ArrayList<Patient>) getAllAdmittedPatientsFromServer();
 	}
 
-	
 	private List<Patient> getAllAdmittedPatientsFromServer() {
 		List<Patient> allPersons = null;
 
 		try {
-			URI uri = new URIBuilder("https://api.parse.com/1/classes/Patient/")
-					.build();
+			URI uri = new URIBuilder(
+					"http://bulhosp-pentech.rhcloud.com/rest/patient").build();
 			HttpGet getRequest = new HttpGet(uri);
-			getRequest.setHeader("X-Parse-Application-Id",
-					"4wky9qF2hjZmOM6zU4WOSI6t6fkSPDFPxN0yY1f4");
-			getRequest.setHeader("X-Parse-REST-API-Key",
-					"ktB7WNVrbhwFIElE6a8Jq74daE1HqcDqyxtcHnEP");
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpclient.execute(getRequest);
 
@@ -98,9 +94,11 @@ public class IndexController {
 				HttpEntity httpEntity = response.getEntity();
 
 				ObjectMapper om = new ObjectMapper();
-				Results persons = om.readValue(EntityUtils.toByteArray(httpEntity),
-						Results.class);
-				allPersons = persons.getResults();
+				allPersons =  om.readValue(
+						EntityUtils.toString(httpEntity),
+						om.getTypeFactory().constructCollectionType(List.class,
+								Patient.class));
+
 			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -120,7 +118,7 @@ public class IndexController {
 	public void setAllPatients(ArrayList<Patient> allPatients) {
 		this.allPatients = allPatients;
 	}
-	
+
 	public String getNameFilter() {
 		return nameFilter;
 	}
@@ -128,20 +126,21 @@ public class IndexController {
 	public void setNameFilter(String nameFilter) {
 		this.nameFilter = nameFilter;
 	}
+
 	public String getSurnameFilter() {
 		return surnameFilter;
 	}
+
 	public void setSurnameFilter(String surnameFilter) {
 		this.surnameFilter = surnameFilter;
 	}
-	
-    public String getFamilyFilter() {
+
+	public String getFamilyFilter() {
 		return familyFilter;
 	}
+
 	public void setFamilyFilter(String familyFilter) {
 		this.familyFilter = familyFilter;
 	}
 
-
 }
-

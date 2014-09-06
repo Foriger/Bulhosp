@@ -57,19 +57,7 @@
 
 						<h:outputText value="#{patient.diagnoseCode}" />
 					</rich:column>
-
-
-					<rich:column>
-
-						<f:facet name="header">
-							<h:panelGroup>
-								<h:outputText value="Отделение" />
-							</h:panelGroup>
-						</f:facet>
-
-						<h:outputText value="#{patient.ward_for_hospital_stay}" />
-					</rich:column>
-
+					
 					<rich:column>
 						<a4j:commandButton
 							action="#{dischargeController.dischargePatient(patient)}"

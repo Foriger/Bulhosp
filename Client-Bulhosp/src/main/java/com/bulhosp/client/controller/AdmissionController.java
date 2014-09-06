@@ -44,18 +44,14 @@ public class AdmissionController {
 			StringEntity input = new StringEntity(om.writeValueAsString(patientForAdmit));
 			
 			HttpPost postRequest = new HttpPost(
-					"https://api.parse.com/1/classes/Patient");
-			postRequest.setHeader("X-Parse-Application-Id",
-					"4wky9qF2hjZmOM6zU4WOSI6t6fkSPDFPxN0yY1f4");
-			postRequest.setHeader("X-Parse-REST-API-Key",
-					"ktB7WNVrbhwFIElE6a8Jq74daE1HqcDqyxtcHnEP");
+					"http://bulhosp-pentech.rhcloud.com/rest/patient");
 			postRequest.setHeader("Content-Type", "application/json");
 			postRequest.setEntity(input);
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpclient.execute(postRequest);
 
 			int statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode != 201) {
+			if (statusCode != 200) {
 				FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Error", "Admit failed.Please try again later");
 				FacesContext.getCurrentInstance().addMessage(null, m);

@@ -16,7 +16,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.bulhosp.server.response.LoginResponse;
+import com.bulhosp.server.response.UserObject;
 import com.bulhosp.session.utils.SessionUtilsSingleton;
 
 @Model
@@ -48,8 +48,8 @@ public class LoginController {
 				HttpEntity httpEntity = response.getEntity();
 
 				ObjectMapper om = new ObjectMapper();
-				LoginResponse loginResponse = om.readValue(EntityUtils
-						.toByteArray(httpEntity), LoginResponse.class);
+				UserObject loginResponse = om.readValue(EntityUtils
+						.toByteArray(httpEntity), UserObject.class);
 				SessionUtilsSingleton.getInstance().setSessionToken(loginResponse.getSessionToken());
 				result = "index?faces-redirect=true";
 			}		

@@ -40,15 +40,10 @@ public class DischargeController {
 	private List<Patient> getAllAdmittedPatientsFromServer() {
 		List<Patient> allPersons = null;
 		try {
-			URI uri = new URIBuilder("https://api.parse.com/1/classes/Patient/")
-					.addParameter("where", "{\"status\":\"ADMITTED\"}").build();
+			URI uri = new URIBuilder("http://bulhosp-pentech.rhcloud.com/rest/patient")
+					.addParameter("status", "ADMITTED").build();
 
 			HttpGet getRequest = new HttpGet(uri);
-			getRequest.setHeader("X-Parse-Application-Id",
-					"4wky9qF2hjZmOM6zU4WOSI6t6fkSPDFPxN0yY1f4");
-			getRequest.setHeader("X-Parse-REST-API-Key",
-					"ktB7WNVrbhwFIElE6a8Jq74daE1HqcDqyxtcHnEP");
-
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpclient.execute(getRequest);
 
@@ -64,16 +59,17 @@ public class DischargeController {
 			HttpEntity httpEntity = response.getEntity();
 
 			ObjectMapper om = new ObjectMapper();
-			Results persons = om.readValue(EntityUtils.toByteArray(httpEntity),
-					Results.class);
-			allPersons = persons.getResults();
+			allPersons =  om.readValue(
+					EntityUtils.toString(httpEntity),
+					om.getTypeFactory().constructCollectionType(List.class,
+							Patient.class));
+
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		return allPersons;
@@ -82,16 +78,10 @@ public class DischargeController {
 	public void dischargePatient(Patient patient) {
 
 		try {
-			String patientID = patient.getObjectId();
-			String uri = "https://api.parse.com/1/classes/Patient/" + patientID;
+			Long patientID = patient.getPatient_id();
+			String uri = "http://bulhosp-pentech.rhcloud.com/rest/patient/"+ patientID + "/discharge";
 			HttpPut putRequest = new HttpPut(uri);
-			putRequest.setHeader("X-Parse-Application-Id",
-					"4wky9qF2hjZmOM6zU4WOSI6t6fkSPDFPxN0yY1f4");
-			putRequest.setHeader("X-Parse-REST-API-Key",
-					"ktB7WNVrbhwFIElE6a8Jq74daE1HqcDqyxtcHnEP");
-			putRequest.setHeader("Content-Type", "application/json");
-			StringEntity input = new StringEntity("{\"status\":\"DISCHARGED\"}");
-			putRequest.setEntity(input);
+
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpclient.execute(putRequest);
 
@@ -110,39 +100,7 @@ public class DischargeController {
 		}
 	}
 
-	// try {
-	// URI uri = new URIBuilder("https://api.parse.com/1/classes/Patient/")
-	// .build();
-	// HttpGet getRequest = new HttpGet(uri);
-	// getRequest.setHeader("X-Parse-Application-Id",
-	// "4wky9qF2hjZmOM6zU4WOSI6t6fkSPDFPxN0yY1f4");
-	// getRequest.setHeader("X-Parse-REST-API-Key",
-	// "ktB7WNVrbhwFIElE6a8Jq74daE1HqcDqyxtcHnEP");
-	// CloseableHttpClient httpclient = HttpClients.createDefault();
-	// CloseableHttpResponse response = httpclient.execute(getRequest);
-	//
-	// int statusCode = response.getStatusLine().getStatusCode();
-	// if (statusCode != 200) {
-	// System.out.println("Failed with HTTP error code : "
-	// + statusCode);
-	// } else {
-	// System.out.println(response.toString());
-	// HttpEntity httpEntity = response.getEntity();
-	//
-	// ObjectMapper om = new ObjectMapper();
-	// Results persons = om.readValue(EntityUtils.toByteArray(httpEntity),
-	// Results.class);
-	// allPersons = persons.getResults();
-	// }
-	// } catch (URISyntaxException e) {
-	// e.printStackTrace();
-	// } catch (ClientProtocolException e) {
-	// e.printStackTrace();
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// return allPersons;
+
 
 	public Patient getPatientForDischarge() {
 		return patientForDischarge;

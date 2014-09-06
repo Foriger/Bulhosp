@@ -39,6 +39,7 @@ public class Patient {
 	@Pattern(regexp="[0-9]+",message="СС_НО трябва да съдръжа само цифри.")
 	private String ss_no;
 	
+	private Long patient_id;
 	private String firstname;
 	private String surname;
 	private String family;
@@ -46,14 +47,9 @@ public class Patient {
 	private Date dob;
 	private String gender;
 	private String status;
-	
 	@Size(min=20,max=4000)
 	private String notes;
-	
-	private String objectId;
-
 	private int diagnoseCode;
-	private String ward_for_hospital_stay;
 	
 	
 	public String getGender() {
@@ -62,12 +58,7 @@ public class Patient {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getWard_for_hospital_stay() {
-		return ward_for_hospital_stay;
-	}
-	public void setWard_for_hospital_stay(String ward_for_hospital_stay) {
-		this.ward_for_hospital_stay = ward_for_hospital_stay;
-	}
+	
 	public int getDiagnoseCode() {
 		return diagnoseCode;
 	}
@@ -134,11 +125,12 @@ public class Patient {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-	public String getObjectId() {
-		return objectId;
+	
+	public Long getPatient_id() {
+		return patient_id;
 	}
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
+	public void setPatient_id(Long patient_id) {
+		this.patient_id = patient_id;
 	}
 	
 	

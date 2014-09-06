@@ -2,7 +2,7 @@ package com.bulhosp.server.response;
 
 import java.util.Date;
 
-public class LoginResponse {
+public class UserObject {
 	private String username;
 	private Date createdAt;
 	private Date updatedAt;

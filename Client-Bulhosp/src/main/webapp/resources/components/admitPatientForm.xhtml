@@ -91,11 +91,6 @@
 			value="#{cc.attrs.patientForAdmit.notes}" rows="10" />
 		<rich:message for="notes" errorClass="invalid" />
 
-		<h:outputLabel for="ward" value="Oтделение:" />
-		<h:selectOneMenu value="#{cc.attrs.patientForAdmit.ward_for_hospital_stay}" id="ward">
-			<f:selectItem itemValue="M" itemLabel="Много са.." />
-		</h:selectOneMenu>
-		<rich:message for="ward" errorClass="invalid" />
 
 
 		<h:outputLabel for="diagnose" value="Диагноза:" />

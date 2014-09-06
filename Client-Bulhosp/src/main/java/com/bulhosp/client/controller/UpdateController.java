@@ -39,15 +39,13 @@ public class UpdateController {
 	private List<Patient> getAllAdmittedPatientsFromServer() {
 		List<Patient> allPersons = null;
 		try {
-			URI uri = new URIBuilder("https://api.parse.com/1/classes/Patient/")
-					.addParameter("where", "{\"status\":\"ADMITTED\"}").build();
+			URI uri = new URIBuilder("http://bulhosp-pentech.rhcloud.com/rest/patient")
+					.addParameter("status", "ADMITTED").build();
+
 			HttpGet getRequest = new HttpGet(uri);
-			getRequest.setHeader("X-Parse-Application-Id",
-					"4wky9qF2hjZmOM6zU4WOSI6t6fkSPDFPxN0yY1f4");
-			getRequest.setHeader("X-Parse-REST-API-Key",
-					"ktB7WNVrbhwFIElE6a8Jq74daE1HqcDqyxtcHnEP");
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpclient.execute(getRequest);
+
 
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
@@ -55,14 +53,15 @@ public class UpdateController {
 						+ statusCode);
 			} else {
 				System.out.println(response.toString());
-				HttpEntity httpEntity = response.getEntity();
-
-				ObjectMapper om = new ObjectMapper();
-				Results persons = om.readValue(EntityUtils.toByteArray(httpEntity),
-						Results.class);
-				allPersons = persons.getResults();
 			}
 
+			HttpEntity httpEntity = response.getEntity();
+
+			ObjectMapper om = new ObjectMapper();
+			allPersons =  om.readValue(
+					EntityUtils.toString(httpEntity),
+					om.getTypeFactory().constructCollectionType(List.class,
+							Patient.class));
 
 
 		} catch (ClientProtocolException e) {
@@ -71,7 +70,7 @@ public class UpdateController {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
-		}
+		} 
 		return allPersons;
 	}
 
@@ -80,39 +79,7 @@ public class UpdateController {
 	}
 
 	public void updatePatientInServer() {
-		try {
-			String patientID = patientForUpdate.getObjectId();
-			URI uri = new URIBuilder("https://api.parse.com/1/classes/Patient/"
-					+ patientID).build();
-			HttpPut putRequest = new HttpPut(uri);
-			putRequest.setHeader("X-Parse-Application-Id",
-					"4wky9qF2hjZmOM6zU4WOSI6t6fkSPDFPxN0yY1f4");
-			putRequest.setHeader("X-Parse-REST-API-Key",
-					"ktB7WNVrbhwFIElE6a8Jq74daE1HqcDqyxtcHnEP");
-			putRequest.setHeader("Content-Type", "application/json");
-			StringEntity input = new StringEntity(
-					"{\"ward_for_hospital_stay\":\"abcd\"}");
-			putRequest.setEntity(input);
-
-			CloseableHttpClient httpclient = HttpClients.createDefault();
-			CloseableHttpResponse response = httpclient.execute(putRequest);
-
-			int statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode != 200) {
-				System.out.println("Failed with HTTP error code : "
-						+ statusCode);
-			} else {
-				System.out.println(response.toString());
-			}
-
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-
+		
 	}
 
 	public Patient getPatientForUpdate() {
