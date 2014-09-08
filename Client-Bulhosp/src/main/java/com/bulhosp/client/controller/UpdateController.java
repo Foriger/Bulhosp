@@ -39,13 +39,13 @@ public class UpdateController {
 	private List<Patient> getAllAdmittedPatientsFromServer() {
 		List<Patient> allPersons = null;
 		try {
-			URI uri = new URIBuilder("http://bulhosp-pentech.rhcloud.com/rest/patient")
+			URI uri = new URIBuilder(
+					"http://bulhosp-pentech.rhcloud.com/rest/patient")
 					.addParameter("status", "ADMITTED").build();
 
 			HttpGet getRequest = new HttpGet(uri);
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpclient.execute(getRequest);
-
 
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
@@ -58,11 +58,13 @@ public class UpdateController {
 			HttpEntity httpEntity = response.getEntity();
 
 			ObjectMapper om = new ObjectMapper();
-			allPersons =  om.readValue(
+			allPersons = om.readValue(
 					EntityUtils.toString(httpEntity),
 					om.getTypeFactory().constructCollectionType(List.class,
 							Patient.class));
-
+			for (Patient person : allPersons) {
+				person.decryptData();
+			}
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -70,7 +72,7 @@ public class UpdateController {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
-		} 
+		}
 		return allPersons;
 	}
 
@@ -79,7 +81,7 @@ public class UpdateController {
 	}
 
 	public void updatePatientInServer() {
-		
+
 	}
 
 	public Patient getPatientForUpdate() {

@@ -98,6 +98,9 @@ public class IndexController {
 						EntityUtils.toString(httpEntity),
 						om.getTypeFactory().constructCollectionType(List.class,
 								Patient.class));
+				for(Patient person : allPersons){
+					person.decryptData();
+				}
 
 			}
 		} catch (URISyntaxException e) {

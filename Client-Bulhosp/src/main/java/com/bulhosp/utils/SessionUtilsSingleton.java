@@ -1,4 +1,4 @@
-package com.bulhosp.session.utils;
+package com.bulhosp.utils;
 
 public class SessionUtilsSingleton {
 	private String sessionToken;

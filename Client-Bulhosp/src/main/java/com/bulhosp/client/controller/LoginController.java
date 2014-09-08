@@ -15,9 +15,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.jasypt.util.text.StrongTextEncryptor;
 
 import com.bulhosp.server.response.UserObject;
-import com.bulhosp.session.utils.SessionUtilsSingleton;
+import com.bulhosp.utils.SessionUtilsSingleton;
 
 @Model
 public class LoginController {
@@ -87,5 +88,5 @@ public class LoginController {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
 }

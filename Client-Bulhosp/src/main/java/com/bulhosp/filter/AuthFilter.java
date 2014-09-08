@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bulhosp.session.utils.SessionUtilsSingleton;
+import com.bulhosp.utils.SessionUtilsSingleton;
 
 @WebFilter(filterName = "AuthFilter", urlPatterns = { "*.jsf" })
 public class AuthFilter implements Filter {
