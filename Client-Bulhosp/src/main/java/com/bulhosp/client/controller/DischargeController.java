@@ -63,8 +63,10 @@ public class DischargeController {
 					EntityUtils.toString(httpEntity),
 					om.getTypeFactory().constructCollectionType(List.class,
 							Patient.class));
-
-
+			
+			for(Patient person : allPersons){
+				person.decryptData();
+			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
