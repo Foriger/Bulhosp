@@ -22,28 +22,9 @@ public class Patient {
 	@Pattern(regexp = "[0-9]+", message = "Единният граждански номер трябва да съдръжа само цифри.")
 	private String egn;
 
-	@Size(min = 10, max = 10, message = "ЛНЧ трябва да е точно 10 цифри.")
-	@Pattern(regexp = "[0-9]+", message = "ЛНЧ трябва да съдръжа само цифри.")
+
 	private String lnch;
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	@Size(min = 10, max = 10, message = "СС_НО трябва да е точно 10 цифри.")
-	@Pattern(regexp = "[0-9]+", message = "СС_НО трябва да съдръжа само цифри.")
 	private String ss_no;
 
 	private Long patient_id;
@@ -54,7 +35,7 @@ public class Patient {
 	private Date dob;
 	private String gender;
 	private String status;
-	@Size(min = 20, max = 4000)
+	@Size(min = 0, max = 4000)
 	private String notes;
 	private int diagnoseCode;
 
@@ -203,6 +184,22 @@ public class Patient {
 
 	public void setPatient_id(Long patient_id) {
 		this.patient_id = patient_id;
+	}
+	
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 }
