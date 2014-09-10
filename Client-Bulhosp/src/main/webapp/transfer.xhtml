@@ -64,8 +64,8 @@
 		</rich:panel>
 		<rich:popupPanel id="popup" modal="false" autosized="true"
 			resizeable="false">
-	<!-- 		<f:facet name="header">
-				<h:outputText value="Промяна статус на пациент" />
+			<f:facet name="header">
+				<h:outputText value="Информация за пациент" />
 			</f:facet>
 			<f:facet name="controls">
 				<h:outputLink value="#"
@@ -73,33 +73,17 @@
                 X
             </h:outputLink>
 			</f:facet>
-			<h:panelGrid columns="3" styleClass="titleCell">
-				<f:facet name="header">
-					<h:outputText
-						value="Mожете да обновите следната информация за пациента" />
-				</f:facet>
-				<h:outputLabel for="ward" value="Отделение:" id="ward" />
-				<h:selectOneMenu
-					value="#{updateController.patientForUpdate.ward_for_hospital_stay}">
-					<f:selectItem itemValue="OTD1" itemLabel="OTD1" />
-					<f:selectItem itemValue="OTD2" itemLabel="OTD2" />
-					<f:selectItem itemValue="OTD3" itemLabel="OTD3" />
+			<h5>За този пациент могат да бъдат променени следните стойности:</h5>
+			<h:form id="update">
+				<h:selectOneMenu value="#{updateController.newDiagnoseCode}">
+					<f:selectItem id="item1" itemLabel="Пиян" itemValue="223" />
+					<f:selectItem id="item2" itemLabel="Много Пиян" itemValue="121" />
 				</h:selectOneMenu>
-				<rich:message for="ward" errorClass="invalid" />
 
-				<h:outputLabel for="diagnose_code" value="Диагноза:" id="diagnose_code" />
-				<h:selectOneMenu
-					value="#{updateController.patientForUpdate.diagnoseCode}">
-					<f:selectItem itemValue="Трипер" itemLabel="Трипер" />
-					<f:selectItem itemValue="Гонорея" itemLabel="Гонорея" />
-				</h:selectOneMenu>
-				<rich:message for="ward" errorClass="invalid" />
-				
-				<f:facet name="footer">
-					<h:commandButton />
-				</f:facet>
-			</h:panelGrid>
- -->
+				<a4j:commandButton value="Обнови пациент"
+					action="#{updateController.updatePatientInServer()}" 
+					oncomplete="#{rich:component('popup')}.show();" />
+			</h:form>
 		</rich:popupPanel>
 	</ui:define>
 </ui:composition>

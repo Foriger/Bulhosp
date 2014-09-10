@@ -21,12 +21,8 @@ public class Patient {
 	@Size(min = 10, max = 10, message = "Единният граждански номер трябва да е точно 10 цифри.")
 	@Pattern(regexp = "[0-9]+", message = "Единният граждански номер трябва да съдръжа само цифри.")
 	private String egn;
-
-
 	private String lnch;
-
 	private String ss_no;
-
 	private Long patient_id;
 	private String firstname;
 	private String surname;
