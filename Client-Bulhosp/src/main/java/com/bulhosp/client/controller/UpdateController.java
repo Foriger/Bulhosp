@@ -4,18 +4,22 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Model;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -23,17 +27,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.bulhosp.model.Patient;
 
-@Model
+@ManagedBean(name = "carsBean")
+@ViewScoped
 public class UpdateController {
-	private Patient patientForUpdate;
+
 	private ArrayList<Patient> allAdmittedPatients;
-	private HashMap<String, Object> valuesForUpdate;
-	private int newDiagnoseCode;
+	private String egnForUpdate;
+	private Patient editedPatient;
 
 	@PostConstruct
 	private void initAllPatientData() {
 		allAdmittedPatients = (ArrayList<Patient>) getAllAdmittedPatientsFromServer();
-		valuesForUpdate = new HashMap<String, Object>();
 	}
 
 	private List<Patient> getAllAdmittedPatientsFromServer() {
@@ -76,51 +80,30 @@ public class UpdateController {
 		return allPersons;
 	}
 
-	public void updatePatientForPopup(Patient patient) {
-		patientForUpdate = patient;
-
+	public void updatePatient() {
 		try {
-			URI uri = new URIBuilder(
-					"http://bulhosp-pentech.rhcloud.com/rest/patient").build();
+			ObjectMapper om = new ObjectMapper();
+			editedPatient.encryptData();
+			StringEntity input = new StringEntity(
+					om.writeValueAsString(editedPatient));
 
-			HttpPut putRequest = new HttpPut(uri);
+			HttpPut postRequest = new HttpPut(
+					"http://bulhosp-pentech.rhcloud.com/rest/patient/"+editedPatient.getPatient_id()+"/update");
+			postRequest.setHeader("Content-Type", "application/json");
+			postRequest.setEntity(input);
 			CloseableHttpClient httpclient = HttpClients.createDefault();
-			CloseableHttpResponse response = httpclient.execute(putRequest);
+			CloseableHttpResponse response = httpclient.execute(postRequest);
 
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
-				System.out.println("Failed with HTTP error code : "
-						+ statusCode);
+				System.out.println(statusCode);
 			} else {
-				System.out.println(response.toString());
+				System.out.println(statusCode);
+				initAllPatientData();
 			}
-
-			HttpEntity httpEntity = response.getEntity();
-
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	public void updatePatientInServer() {
-		HashMap<String, Object> newValues = new HashMap<String, Object>();
-		if (newDiagnoseCode != -1) {
-			newValues.put("diagnoseCode", this.newDiagnoseCode);
-		}
-
-	}
-
-	public Patient getPatientForUpdate() {
-		return patientForUpdate;
-	}
-
-	public void setPatientForUpdate(Patient patientForUpdate) {
-		this.patientForUpdate = patientForUpdate;
 	}
 
 	public ArrayList<Patient> getAllAdmittedPatients() {
@@ -131,20 +114,20 @@ public class UpdateController {
 		this.allAdmittedPatients = allAdmittedPatients;
 	}
 
-	public HashMap<String, Object> getValuesForUpdate() {
-		return valuesForUpdate;
+	public String getEgnForUpdate() {
+		return egnForUpdate;
 	}
 
-	public void setValuesForUpdate(HashMap<String, Object> valuesForUpdate) {
-		this.valuesForUpdate = valuesForUpdate;
+	public void setEgnForUpdate(String egnForUpdate) {
+		this.egnForUpdate = egnForUpdate;
 	}
 
-	public int getNewDiagnoseCode() {
-		return newDiagnoseCode;
+	public Patient getEditedPatient() {
+		return editedPatient;
 	}
 
-	public void setNewDiagnoseCode(int newDiagnoseCode) {
-		this.newDiagnoseCode = newDiagnoseCode;
+	public void setEditedPatient(Patient editedPatient) {
+		this.editedPatient = editedPatient;
 	}
 
 }
