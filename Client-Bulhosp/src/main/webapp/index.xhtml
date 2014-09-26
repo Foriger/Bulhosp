@@ -9,25 +9,41 @@
 	xmlns:my="http://java.sun.com/jsf/composite/components"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	<ui:define name="content">
-		<h1>Bulhosp - Специализирана болнична система</h1>
+		<h:form>
+			<rich:collapsiblePanel header="Информация" expanded="false">
+				<div class="jumbotron">
+					<div class="container">
+						<h2>Bulhosp</h2>
+						<p>Добре дошли в Bulhosp.Система за болнична администрация
+							базирана на облачна структура.</p>
+					</div>
+				</div>
+			</rich:collapsiblePanel>
+		</h:form>
+
+
 
 		<rich:panel>
+			<h4>Tърсене на информация за пациент</h4>
 			<h:form id="searchPatientForm">
 				<rich:messages />
 				<rich:dataTable value="#{indexController.allPatients}" var="patient"
 					id="table">
 					<f:facet name="noData">
-                Nothing found
+                Няма приет пациент с такива данни.
             </f:facet>
 
 					<rich:column filterValue="#{indexController.nameFilter}"
 						filterExpression="#{fn:containsIgnoreCase(patient.firstname, indexController.nameFilter)}">
 						<f:facet name="header">
 							<h:panelGroup>
-								<h:outputText value="Име:" />
-								<h:inputText value="#{indexController.nameFilter}">
-									<a4j:ajax render="table" execute="@this" event="change" />
-								</h:inputText>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Име" />
+									<h:inputText value="#{indexController.nameFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
 							</h:panelGroup>
 						</f:facet>
 						<h:outputText value="#{patient.firstname}" />
@@ -38,32 +54,85 @@
 						filterExpression="#{fn:containsIgnoreCase(patient.surname, indexController.surnameFilter)}">
 						<f:facet name="header">
 							<h:panelGroup>
-								<h:outputText value="Презиме:" />
-								<h:inputText value="#{indexController.surnameFilter}">
-									<a4j:ajax render="table" execute="@this" event="change" />
-								</h:inputText>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Презиме:" />
+									<h:inputText value="#{indexController.surnameFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
 							</h:panelGroup>
 						</f:facet>
 						<h:outputText value="#{patient.surname}" />
 					</rich:column>
+
+
+					<rich:column filterValue="#{indexController.familyFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.family, indexController.familyFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Фамилия:" />
+									<h:inputText value="#{indexController.familyFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.family}" />
+					</rich:column>
+
+					<rich:column filterValue="#{indexController.egnFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.egn, indexController.egnFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="ЕГН:" />
+									<h:inputText value="#{indexController.egnFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.egn}" />
+					</rich:column>
+
+					<rich:column filterValue="#{indexController.addresssFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.address, indexController.addresssFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Адрес:" />
+									<h:inputText value="#{indexController.addresssFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.address}" />
+					</rich:column>
+
+					<rich:column filterValue="#{indexController.dobFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.dob, indexController.dobFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon"
+										value="Дата на раждане:" />
+									<rich:calendar id="dob" value="#{indexController.dobFilter}">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</rich:calendar>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.dob}" />
+					</rich:column>
 				</rich:dataTable>
-
-				<rich:column filterValue="#{indexController.surnameFilter}"
-					filterExpression="#{fn:containsIgnoreCase(patient.surname, indexController.surnameFilter)}">
-					<f:facet name="header">
-						<h:panelGroup>
-							<h:outputText value="Фамилия:" />
-							<h:inputText value="#{indexController.surnameFilter}">
-								<a4j:ajax render="table" execute="@this" event="change" />
-							</h:inputText>
-						</h:panelGroup>
-					</f:facet>
-					<h:outputText value="#{patient.surname}" />
-				</rich:column>
-
-
 			</h:form>
-		</rich:panel>
 
+		</rich:panel>
 	</ui:define>
 </ui:composition>
