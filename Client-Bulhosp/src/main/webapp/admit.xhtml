@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition template="/WEB-INF/templates/default.xhtml"
+<ui:composition template="/WEB-INF/templates/pageContent.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -8,20 +8,16 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:my="http://java.sun.com/jsf/composite/components">
 	<ui:define name="content">
-		<h1>Прием на пациент</h1>
-		<h:form id="reg">
-			<rich:panel id="admitPatientPanel" header="Прием на пациент"
-				headerClass="header">
+		<h:form id="reg" styleClass="form-horizontal">
+			<rich:panel id="admitPatientPanel">
 				<my:admitPatientForm id="admitPatientForm"
 					patientForAdmit="#{patientForAdmit}" />
 			</rich:panel>
-
-
 			<h:panelGrid columns="2">
 				<a4j:commandButton id="admitPatient"
-					action="#{admissionController.admitPatient}"
-					value="Приеми пациент" styleClass="register"
-					execute="admitPatientPanel" render="admitPatientPanel" />
+					action="#{admissionController.admitPatient}" value="Приеми пациент"
+					styleClass="register" execute="admitPatientPanel"
+					render="admitPatientPanel" />
 				<rich:messages globalOnly="true" />
 			</h:panelGrid>
 		</h:form>
