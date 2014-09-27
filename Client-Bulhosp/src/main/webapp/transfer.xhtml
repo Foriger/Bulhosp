@@ -122,14 +122,36 @@
 					<rich:column>
 						<a4j:commandLink styleClass="no-decor" render="editGrid"
 							execute="@this" oncomplete="#{rich:component('editPane')}.show()"
-							value="Obnovi">
+							value="Обнови данни">
 
 							<f:setPropertyActionListener target="#{carsBean.editedPatient}"
 								value="#{patient}" />
 						</a4j:commandLink>
 					</rich:column>
+
+					<rich:column>
+						<a4j:commandLink styleClass="no-decor" execute="@this"
+							oncomplete="#{rich:component('researchPane')}.show()"
+							value="Изследвания">
+						</a4j:commandLink>
+					</rich:column>
+
 				</rich:dataTable>
 			</rich:panel>
+			<rich:popupPanel header="Изследвания за  пациент" id="researchPane"
+				domElementAttachment="form" moveable="false" autosized="true">
+				<rich:fileUpload
+					fileUploadListener="#{fileUploadController.listener}" id="upload"
+					acceptedTypes="txt"
+					ontyperejected="alert('Само текстови файлове моля:)');"
+					maxFilesQuantity="1">
+					<a4j:ajax event="uploadcomplete" execute="@none" render="info" />
+				</rich:fileUpload>
+				<a4j:commandButton value="Готово"
+					onclick="#{rich:component('researchPane')}.hide(); return false;" />
+
+			</rich:popupPanel>
+
 
 			<rich:popupPanel header="Данни за пациент" id="editPane"
 				domElementAttachment="form" moveable="false" autosized="true">
@@ -165,8 +187,7 @@
 							value="Име:" />
 						<div class="col-sm-10">
 							<h:inputText id="firstname"
-								value="#{carsBean.editedPatient.firstname}"
-								class="form-control">
+								value="#{carsBean.editedPatient.firstname}" class="form-control">
 								<rich:validator />
 							</h:inputText>
 						</div>
@@ -189,8 +210,8 @@
 						<h:outputLabel class="col-sm-2 control-label" for="family"
 							value="Фамилия:" />
 						<div class="col-sm-10">
-							<h:inputText id="family"
-								value="#{carsBean.editedPatient.family}" class="form-control">
+							<h:inputText id="family" value="#{carsBean.editedPatient.family}"
+								class="form-control">
 								<rich:validator />
 							</h:inputText>
 						</div>

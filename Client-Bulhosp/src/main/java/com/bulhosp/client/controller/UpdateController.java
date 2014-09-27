@@ -146,12 +146,20 @@ public class UpdateController {
 			}
 		};
 	}
-	
-	
 
 	@PostConstruct
 	private void initAllPatientData() {
 		allAdmittedPatients = (ArrayList<Patient>) getAllAdmittedPatientsFromServer();
+	}
+
+	public void uploadFileToServer() {
+		try {
+			URI uri = new URIBuilder(
+					"http://bulhosp-pentech.rhcloud.com/rest/patient").build();
+
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private List<Patient> getAllAdmittedPatientsFromServer() {
