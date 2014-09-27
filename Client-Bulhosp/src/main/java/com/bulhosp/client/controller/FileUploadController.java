@@ -37,7 +37,7 @@ public class FileUploadController implements Serializable {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
-            HttpPost httppost = new HttpPost("http://localhost:8080/bulhosp/rest/patient/upload");
+            HttpPost httppost = new HttpPost("http://bulhosp-pentech.rhcloud.com/rest/patient/upload");
 
 
             ContentBody mimePart = new ByteArrayBody(item.getData(), item.getName());
