@@ -41,6 +41,7 @@ public class AdmissionController {
 		
 		try {
 			ObjectMapper om = new ObjectMapper();
+			System.out.println(om.writeValueAsString(patientForAdmit));
 			patientForAdmit.encryptData();
 			StringEntity input = new StringEntity(om.writeValueAsString(patientForAdmit));
 			

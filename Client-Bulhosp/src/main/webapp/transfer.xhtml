@@ -6,52 +6,263 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:my="http://java.sun.com/jsf/composite/components">
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	<ui:define name="content">
-		<h1>Промяна на пациентски статус</h1>
+		<a4j:status onstart="#{rich:component('statPane')}.show()"
+			onstop="#{rich:component('statPane')}.hide()" />
+		<h:form styleClass="form-horizontal">
+			<rich:panel id="dischargePatientPanel">
 
-		<h:form id="form">
-			<rich:dataTable value="#{carsBean.allAdmittedPatients}"
-				var="patient" iterationStatusVar="it" id="table">
-				<rich:column>
-					<f:facet name="header">Име</f:facet>
-					<h:outputText value="#{patient.family}" />
-				</rich:column>
-				<rich:column>
-					<f:facet name="header">ЕГН</f:facet>
-					<h:outputText value="#{patient.egn}" />
-				</rich:column>
-				<rich:column>
-					<a4j:commandLink styleClass="no-decor" render="editGrid"
-						execute="@this" oncomplete="#{rich:component('editPane')}.show()" value="Obnovi">
-						
-						<f:setPropertyActionListener
-							target="#{carsBean.editedPatient}" value="#{patient}" />
-					</a4j:commandLink>
-				</rich:column>
+				<rich:messages />
+				<rich:dataTable value="#{carsBean.allAdmittedPatients}"
+					var="patient" iterationStatusVar="it" id="table">
+					<f:facet name="noData">
+                Няма приет пациент с такива данни.
+            </f:facet>
 
-			</rich:dataTable>
+					<rich:column filterValue="#{carsBean.nameFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.firstname, carsBean.nameFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Име" />
+									<h:inputText value="#{carsBean.nameFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.firstname}" />
+					</rich:column>
 
 
-			<rich:popupPanel header="Edit Car Details" id="editPane"
-				domElementAttachment="parent" width="400" height="170">
-				<h:panelGrid columns="3" id="editGrid">
-					<h:outputText value="Име:" />
-					<h:outputText value="#{carsBean.editedPatient.firstname}" />
-					<h:panelGroup />
-					<h:outputText value="Фамилия" />
-					<h:inputText value="#{carsBean.editedPatient.egn}" />
+					<rich:column filterValue="#{carsBean.surnameFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.surname, carsBean.surnameFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Презиме:" />
+									<h:inputText value="#{carsBean.surnameFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.surname}" />
+					</rich:column>
 
-					<a4j:commandButton value="Запази"
-						action="#{carsBean.updatePatient()}" render="table"
-						execute="editPane"
-						oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}" />
-					<a4j:commandButton value="Отмени"
-						onclick="#{rich:component('editPane')}.hide(); return false;" />
-				</h:panelGrid>
+
+					<rich:column filterValue="#{carsBean.familyFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.family, carsBean.familyFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Фамилия:" />
+									<h:inputText value="#{carsBean.familyFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.family}" />
+					</rich:column>
+
+					<rich:column filterValue="#{carsBean.egnFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.egn, carsBean.egnFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="ЕГН:" />
+									<h:inputText value="#{carsBean.egnFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.egn}" />
+					</rich:column>
+
+					<rich:column filterValue="#{carsBean.addresssFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.address, carsBean.addresssFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Адрес:" />
+									<h:inputText value="#{carsBean.addresssFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.address}" />
+					</rich:column>
+
+					<rich:column filterValue="#{carsBean.dobFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.dob, carsBean.dobFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon"
+										value="Дата на раждане:" />
+									<rich:calendar id="dob" value="#{carsBean.dobFilter}">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</rich:calendar>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.dob}" />
+					</rich:column>
+
+					<rich:column>
+						<a4j:commandLink styleClass="no-decor" render="editGrid"
+							execute="@this" oncomplete="#{rich:component('editPane')}.show()"
+							value="Obnovi">
+
+							<f:setPropertyActionListener target="#{carsBean.editedPatient}"
+								value="#{patient}" />
+						</a4j:commandLink>
+					</rich:column>
+				</rich:dataTable>
+			</rich:panel>
+
+			<rich:popupPanel header="Данни за пациент" id="editPane"
+				domElementAttachment="form" moveable="false" autosized="true">
+				<rich:panel id="editGrid">
+
+
+					<h4>Моля въведете идентификационен код на пациент:</h4>
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="egn"
+							value="ЕГН:" />
+						<div class="col-sm-10">
+							<h:inputText id="egn" value="#{carsBean.editedPatient.egn}"
+								class="form-control" required="false">
+								<rich:validator />
+							</h:inputText>
+						</div>
+						<br />
+					</div>
+
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="lnch"
+							value="ЛНЧ:" />
+						<div class="col-sm-10">
+							<h:inputText id="lnch" value="#{carsBean.editedPatient.lnch}"
+								class="form-control" required="false">
+								<rich:validator />
+							</h:inputText>
+						</div>
+					</div>
+					<h4>Моля въведете трите имена на пациента:</h4>
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="firstname"
+							value="Име:" />
+						<div class="col-sm-10">
+							<h:inputText id="firstname"
+								value="#{carsBean.editedPatient.firstname}"
+								class="form-control">
+								<rich:validator />
+							</h:inputText>
+						</div>
+						<br />
+					</div>
+
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="surname"
+							value="Презиме:" />
+						<div class="col-sm-10">
+							<h:inputText id="surname"
+								value="#{carsBean.editedPatient.surname}" class="form-control">
+								<rich:validator />
+							</h:inputText>
+						</div>
+						<br />
+					</div>
+
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="family"
+							value="Фамилия:" />
+						<div class="col-sm-10">
+							<h:inputText id="family"
+								value="#{carsBean.editedPatient.family}" class="form-control">
+								<rich:validator />
+							</h:inputText>
+						</div>
+						<br />
+					</div>
+					<h4>Моля въведете следните данни за пациента (Ако са налични):</h4>
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="dob"
+							value="Дата на раждане:" />
+						<div class="col-sm-10">
+							<rich:calendar id="dob" value="#{carsBean.editedPatient.dob}" />
+						</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="address"
+							value="Адрес:" />
+						<div class="col-sm-10">
+							<h:inputTextarea id="address"
+								value="#{carsBean.editedPatient.address}" rows="10"
+								class="form-control">
+								<rich:validator />
+							</h:inputTextarea>
+						</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="gender"
+							value="Пол:" id="gender" />
+						<div class="col-sm-10">
+							<h:selectOneMenu value="#{carsBean.editedPatient.gender}"
+								styleClass="form-control input-sm">
+								<f:selectItem itemValue="M" itemLabel="Мъж" />
+								<f:selectItem itemValue="F" itemLabel="Жена" />
+								<f:selectItem itemValue="U" itemLabel="Неизвестен" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="notes"
+							value="Бележки:" />
+						<div class="col-sm-10">
+							<h:inputTextarea id="notes"
+								value="#{carsBean.editedPatient.notes}" rows="10"
+								class="form-control">
+								<rich:validator />
+							</h:inputTextarea>
+						</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<h:outputLabel class="col-sm-2 control-label" for="diagnose"
+							value="Диагноза:" />
+						<div class="col-sm-10">
+							<h:selectOneMenu value="#{carsBean.editedPatient.diagnoseCode}"
+								id="diagnose">
+								<f:selectItem itemValue="1" itemLabel="1" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+
+
+				</rich:panel>
+
+				<a4j:commandButton value="Запази"
+					action="#{carsBean.updatePatient()}" render="table"
+					execute="editPane"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}" />
+				<a4j:commandButton value="Отмени"
+					onclick="#{rich:component('editPane')}.hide(); return false;" />
 			</rich:popupPanel>
+
 		</h:form>
 	</ui:define>
-
 </ui:composition>
-

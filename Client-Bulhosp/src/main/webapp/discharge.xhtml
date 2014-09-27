@@ -6,67 +6,146 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:my="http://java.sun.com/jsf/composite/components">
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	<ui:define name="content">
-		<h1>Изписване на пациент</h1>
+		<a4j:status onstart="#{rich:component('statPane')}.show()"
+			onstop="#{rich:component('statPane')}.hide()" />
+		<h:form>
+			<rich:panel id="dischargePatientPanel">
 
-
-
-		<rich:panel id="dischargePatientPanel" header="Изписване на пациент"
-			headerClass="header">
-			<h:form id="discharge">
-				<rich:dataTable value="#{dischargeController.allAdmittedPatients}"
-					var="patient">
+				<rich:messages />
+				<rich:dataTable value="#{dischargeBean.allAdmittedPatients}"
+					var="patient" iterationStatusVar="it" id="table">
 					<f:facet name="noData">
-                В момента няма приети пациенти.
+                Няма приет пациент с такива данни.
             </f:facet>
-					<rich:column>
+
+					<rich:column filterValue="#{dischargeBean.nameFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.firstname, dischargeBean.nameFilter)}">
 						<f:facet name="header">
 							<h:panelGroup>
-								<h:outputText value="Име" />
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Име" />
+									<h:inputText value="#{dischargeBean.nameFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
 							</h:panelGroup>
 						</f:facet>
 						<h:outputText value="#{patient.firstname}" />
 					</rich:column>
-					<rich:column>
+
+
+					<rich:column filterValue="#{dischargeBean.surnameFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.surname, dischargeBean.surnameFilter)}">
 						<f:facet name="header">
 							<h:panelGroup>
-								<h:outputText value="Презиме" />
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Презиме:" />
+									<h:inputText value="#{dischargeBean.surnameFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
 							</h:panelGroup>
 						</f:facet>
 						<h:outputText value="#{patient.surname}" />
 					</rich:column>
-					<rich:column>
 
+
+					<rich:column filterValue="#{dischargeBean.familyFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.family, dischargeBean.familyFilter)}">
 						<f:facet name="header">
 							<h:panelGroup>
-								<h:outputText value="Фамилия" />
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Фамилия:" />
+									<h:inputText value="#{dischargeBean.familyFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
 							</h:panelGroup>
 						</f:facet>
-
 						<h:outputText value="#{patient.family}" />
 					</rich:column>
 
-					<rich:column>
-
+					<rich:column filterValue="#{dischargeBean.egnFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.egn, dischargeBean.egnFilter)}">
 						<f:facet name="header">
 							<h:panelGroup>
-								<h:outputText value="Диагноза" />
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="ЕГН:" />
+									<h:inputText value="#{dischargeBean.egnFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
 							</h:panelGroup>
 						</f:facet>
-
-						<h:outputText value="#{patient.diagnoseCode}" />
+						<h:outputText value="#{patient.egn}" />
 					</rich:column>
-					
+
+					<rich:column filterValue="#{dischargeBean.addresssFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.address, dischargeBean.addresssFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon" value="Адрес:" />
+									<h:inputText value="#{dischargeBean.addresssFilter}"
+										styleClass="form-control">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.address}" />
+					</rich:column>
+
+					<rich:column filterValue="#{dischargeBean.dobFilter}"
+						filterExpression="#{fn:containsIgnoreCase(patient.dob, dischargeBean.dobFilter)}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div class="input-group input-group-sm">
+									<h:outputText styleClass="input-group-addon"
+										value="Дата на раждане:" />
+									<rich:calendar id="dob" value="#{dischargeBean.dobFilter}">
+										<a4j:ajax render="table" execute="@this" event="change" />
+									</rich:calendar>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<h:outputText value="#{patient.dob}" />
+					</rich:column>
+
 					<rich:column>
-						<a4j:commandButton
-							action="#{dischargeController.dischargePatient(patient)}"
-							value="Изпиши" execute="dischargePatientPanel" render="dischargePatientPanel" />
+						<a4j:commandLink styleClass="no-decor" execute="@this"
+							render="@none"
+							oncomplete="#{rich:component('confirmPane')}.show()"
+							value="Изпиши">
+							<a4j:param value="#{it.index}"
+								assignTo="#{dischargeBean.indexForDischarge}" />
+						</a4j:commandLink>
 					</rich:column>
-
 
 				</rich:dataTable>
-			</h:form>
-		</rich:panel>
+			</rich:panel>
+			<a4j:jsFunction name="remove"
+				action="#{dischargeBean.dischargePatient()}" render="table"
+				execute="@this"
+				oncomplete="#{rich:component('confirmPane')}.hide();" />
+
+			<rich:popupPanel id="confirmPane" autosized="true">
+           Искате ли да изпишете този пациент?
+            <a4j:commandButton value="Не"
+					onclick="#{rich:component('confirmPane')}.hide(); return false;" />
+				<a4j:commandButton value="Да" onclick="remove(); return false;" />
+			</rich:popupPanel>
+
+			<rich:popupPanel id="statPane" autosized="true">
+            Please wait...
+        </rich:popupPanel>
+		</h:form>
 	</ui:define>
 </ui:composition>

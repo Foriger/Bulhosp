@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,10 +19,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.richfaces.model.Filter;
 
 import com.bulhosp.model.Patient;
-import com.bulhosp.model.Results;
-import org.richfaces.model.Filter;
 
 @Model
 public class IndexController {
@@ -30,7 +30,81 @@ public class IndexController {
 	private String nameFilter;
 	private String surnameFilter;
 	private String familyFilter;
+	private String egnFilter;
+	private String lnchFilter;
+	private String addresssFilter;
+	private Date dobFilter;
 
+	private String genderFilter;
+	
+	
+	public Filter<?> getFilterGender() {
+		return new Filter<Patient>() {
+			public boolean accept(Patient patient) {
+				String name = getGenderFilter();
+				if (name == null || name.length() == 0
+						|| name.equals(patient.getDob())) {
+					return true;
+				}
+				return false;
+			}
+		};
+	}
+	
+	
+	public Filter<?> getFilterDob() {
+		return new Filter<Patient>() {
+			public boolean accept(Patient patient) {
+				Date name = getDobFilter();
+				if (name.equals(patient.getDob())) {
+					return true;
+				}
+				return false;
+			}
+		};
+	}
+	
+	public Filter<?> getFilterAddress() {
+		return new Filter<Patient>() {
+			public boolean accept(Patient patient) {
+				String name = getAddresssFilter();
+				if (name == null || name.length() == 0
+						|| name.equals(patient.getAddress())) {
+					return true;
+				}
+				return false;
+			}
+		};
+	}
+	
+	public Filter<?> getFilterLnch() {
+		return new Filter<Patient>() {
+			public boolean accept(Patient patient) {
+				String name = getLnchFilter();
+				if (name == null || name.length() == 0
+						|| name.equals(patient.getLnch())) {
+					return true;
+				}
+				return false;
+			}
+		};
+	}
+	
+	
+	public Filter<?> getFilterEgn() {
+		return new Filter<Patient>() {
+			public boolean accept(Patient patient) {
+				String name = getEgnFilter();
+				if (name == null || name.length() == 0
+						|| name.equals(patient.getEgn())) {
+					return true;
+				}
+				return false;
+			}
+		};
+	}
+	
+	
 	public Filter<?> getFilterName() {
 		return new Filter<Patient>() {
 			public boolean accept(Patient patient) {
@@ -144,6 +218,47 @@ public class IndexController {
 
 	public void setFamilyFilter(String familyFilter) {
 		this.familyFilter = familyFilter;
+	}
+
+	public String getEgnFilter() {
+		return egnFilter;
+	}
+
+	public void setEgnFilter(String egnFilter) {
+		this.egnFilter = egnFilter;
+	}
+
+	public String getLnchFilter() {
+		return lnchFilter;
+	}
+
+	public void setLnchFilter(String lnchFilter) {
+		this.lnchFilter = lnchFilter;
+	}
+
+	public String getAddresssFilter() {
+		return addresssFilter;
+	}
+
+	public void setAddresssFilter(String addresssFilter) {
+		this.addresssFilter = addresssFilter;
+	}
+
+	public Date getDobFilter() {
+		return dobFilter;
+	}
+
+	public void setDobFilter(Date dobFilter) {
+		this.dobFilter = dobFilter;
+	}
+
+
+	public String getGenderFilter() {
+		return genderFilter;
+	}
+
+	public void setGenderFilter(String genderFilter) {
+		this.genderFilter = genderFilter;
 	}
 
 }
